@@ -1,0 +1,27 @@
+#cmdai-popup {
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 400px;
+  background: #1e1e1e;
+  color: white;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  z-index: 999999;
+  font-family: Arial, sans-serif;
+}
+
+.cmdai-header {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+#cmdai-popup input {
+  width: 100%;
+  padding: 8px;
+  border-radius: 6px;
+  border: none;
+  outline: none;
+}
