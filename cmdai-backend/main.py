@@ -1,10 +1,12 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
+import google.generativeai as genai
+
+genai.configure(api_key="YOUR_GEMINI_API_KEY")
 
 app = FastAPI()
 
-# Allow extension to talk to backend
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -12,13 +14,31 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+model = genai.GenerativeModel("gemini-1.5-flash")
+
 class RequestData(BaseModel):
     query: str
     context: str
 
 @app.post("/ask")
 async def ask(data: RequestData):
-    # For now just return mock response
+
+    prompt = f"""
+You are CmdAI, an AI assistant embedded in a browser.
+
+The user is viewing a webpage.
+
+Page content:
+{data.context}
+
+User question:
+{data.query}
+
+Answer clearly and concisely.
+"""
+
+    response = model.generate_content(prompt)
+
     return {
-        "answer": f"You asked: {data.query}\n\n(Page length: {len(data.context)} characters)"
+        "answer": response.text
     }
