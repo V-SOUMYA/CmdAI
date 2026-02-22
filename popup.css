@@ -1,27 +1,51 @@
 #cmdai-popup {
   position: fixed;
-  top: 20%;
+  top: 18%;
   left: 50%;
-  transform: translateX(-50%);
-  width: 400px;
-  background: #1e1e1e;
-  color: white;
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  transform: translateX(-50%) scale(0.95);
+  width: 460px;
+  background: #111827;
+  color: #f9fafb;
+  padding: 18px;
+  border-radius: 14px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.35);
   z-index: 999999;
-  font-family: Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  animation: cmdaiFadeIn 0.15s ease-out forwards;
+}
+
+@keyframes cmdaiFadeIn {
+  to {
+    transform: translateX(-50%) scale(1);
+    opacity: 1;
+  }
 }
 
 .cmdai-header {
-  font-weight: bold;
-  margin-bottom: 10px;
+  font-weight: 600;
+  font-size: 16px;
+  margin-bottom: 12px;
 }
 
 #cmdai-popup input {
   width: 100%;
-  padding: 8px;
-  border-radius: 6px;
-  border: none;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #374151;
+  background: #1f2937;
+  color: white;
   outline: none;
+}
+
+#cmdai-popup input:focus {
+  border-color: #6366f1;
+}
+
+#cmdai-response {
+  margin-top: 14px;
+  max-height: 260px;
+  overflow-y: auto;
+  font-size: 14px;
+  line-height: 1.5;
+  white-space: pre-wrap;
 }
