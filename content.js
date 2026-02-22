@@ -1,21 +1,16 @@
 let cmdaiBox = null;
 
-chrome.runtime.sendMessage(
-  {
-    action: "askCmdAI",
-    payload: {
-      query: userQuery,
-      context: pageText
+chrome.runtime.onMessage.addListener((request) => {
+  if (request.action === "toggleCmdAI") {
+    if (cmdaiBox) {
+      cmdaiBox.remove();
+      cmdaiBox = null;
+      return;
     }
-  },
-  (response) => {
-    if (response && response.answer) {
-      responseDiv.innerHTML = response.answer;
-    } else {
-      responseDiv.innerHTML = "⚠️ Something went wrong.";
-    }
+
+    createCmdAI();
   }
-);
+});
 
 function createCmdAI() {
   cmdaiBox = document.createElement("div");
@@ -34,7 +29,7 @@ function createCmdAI() {
 
   input.focus();
 
-  // ESC key to close
+  // Close on ESC
   function escListener(e) {
     if (e.key === "Escape" && cmdaiBox) {
       cmdaiBox.remove();
@@ -45,8 +40,8 @@ function createCmdAI() {
 
   document.addEventListener("keydown", escListener);
 
-  // Enter key to submit
-  input.addEventListener("keydown", async (e) => {
+  // Submit on Enter
+  input.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
       const userQuery = input.value;
       responseDiv.innerHTML = "<div style='opacity:0.7;'>CmdAI is thinking...</div>";
@@ -62,28 +57,23 @@ function createCmdAI() {
 
       pageText = pageText.slice(0, 15000);
 
-      try {
-        const result = await fetch("http://127.0.0.1:8000/ask", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
+      // ✅ SEND MESSAGE TO BACKGROUND
+      chrome.runtime.sendMessage(
+        {
+          action: "askCmdAI",
+          payload: {
             query: userQuery,
             context: pageText
-          })
-        });
-
-        if (!result.ok) {
-          throw new Error("Server error");
+          }
+        },
+        (response) => {
+          if (response && response.answer) {
+            responseDiv.innerHTML = response.answer;
+          } else {
+            responseDiv.innerHTML = "⚠️ Something went wrong.";
+          }
         }
-
-        const data = await result.json();
-        responseDiv.innerHTML = data.answer;
-
-      } catch (err) {
-        responseDiv.innerHTML = "⚠️ Something went wrong.";
-      }
+      );
     }
   });
 }
