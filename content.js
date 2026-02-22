@@ -29,12 +29,23 @@ function createCmdAI() {
 
   input.focus();
 
+  // ESC key to close
+  function escListener(e) {
+    if (e.key === "Escape" && cmdaiBox) {
+      cmdaiBox.remove();
+      cmdaiBox = null;
+      document.removeEventListener("keydown", escListener);
+    }
+  }
+
+  document.addEventListener("keydown", escListener);
+
+  // Enter key to submit
   input.addEventListener("keydown", async (e) => {
     if (e.key === "Enter") {
       const userQuery = input.value;
       responseDiv.innerHTML = "<div style='opacity:0.7;'>CmdAI is thinking...</div>";
 
-      // Extract smarter context
       let pageText = "";
       const article = document.querySelector("article");
 
@@ -68,15 +79,6 @@ function createCmdAI() {
       } catch (err) {
         responseDiv.innerHTML = "⚠️ Something went wrong.";
       }
-    }
-  });
-
-  // Close on ESC
-  document.addEventListener("keydown", function escListener(e) {
-    if (e.key === "Escape" && cmdaiBox) {
-      cmdaiBox.remove();
-      cmdaiBox = null;
-      document.removeEventListener("keydown", escListener);
     }
   });
 }
