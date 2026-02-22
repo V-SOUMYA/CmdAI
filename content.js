@@ -1,16 +1,21 @@
 let cmdaiBox = null;
 
-chrome.runtime.onMessage.addListener((request) => {
-  if (request.action === "toggleCmdAI") {
-    if (cmdaiBox) {
-      cmdaiBox.remove();
-      cmdaiBox = null;
-      return;
+chrome.runtime.sendMessage(
+  {
+    action: "askCmdAI",
+    payload: {
+      query: userQuery,
+      context: pageText
     }
-
-    createCmdAI();
+  },
+  (response) => {
+    if (response && response.answer) {
+      responseDiv.innerHTML = response.answer;
+    } else {
+      responseDiv.innerHTML = "⚠️ Something went wrong.";
+    }
   }
-});
+);
 
 function createCmdAI() {
   cmdaiBox = document.createElement("div");

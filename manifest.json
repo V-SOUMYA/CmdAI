@@ -6,6 +6,10 @@
 
   "permissions": ["activeTab", "scripting"],
 
+  "host_permissions": [
+    "http://127.0.0.1:8000/*"
+  ],
+
   "background": {
     "service_worker": "background.js"
   },
@@ -19,12 +23,12 @@
   ],
 
   "commands": {
-  "open-cmdai": {
-    "suggested_key": {
-      "default": "Ctrl+Shift+K",
-      "mac": "Command+Shift+K"
-    },
-    "description": "Open CmdAI"
+    "open-cmdai": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+K",
+        "mac": "Command+Shift+K"
+      },
+      "description": "Open CmdAI"
+    }
   }
-}
 }
