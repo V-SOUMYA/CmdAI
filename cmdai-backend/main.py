@@ -22,23 +22,7 @@ class RequestData(BaseModel):
 
 @app.post("/ask")
 async def ask(data: RequestData):
-
-    prompt = f"""
-You are CmdAI, an AI assistant embedded in a browser.
-
-The user is viewing a webpage.
-
-Page content:
-{data.context}
-
-User question:
-{data.query}
-
-Answer clearly and concisely.
-"""
-
-    response = model.generate_content(prompt)
-
-    return {
-        "answer": response.text
-    }
+    response = model.generate_content(
+        f"Context:\n{data.context}\n\nQuestion:\n{data.query}"
+    )
+    return {"answer": response.text}
