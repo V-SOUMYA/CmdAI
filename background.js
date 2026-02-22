@@ -14,6 +14,14 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         sendResponse({ answer: null });
       });
 
-    return true; // Required for async response
+    return true;
+  }
+});
+
+chrome.commands.onCommand.addListener((command) => {
+  if (command === "open-cmdai") {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      chrome.tabs.sendMessage(tabs[0].id, { action: "toggleCmdAI" });
+    });
   }
 });
