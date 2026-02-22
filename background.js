@@ -1,3 +1,4 @@
+console.log("Background loaded");
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === "askCmdAI") {
     fetch("http://127.0.0.1:8000/ask", {
@@ -19,6 +20,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 });
 
 chrome.commands.onCommand.addListener((command) => {
+  console.log("Shortcut pressed:", command);
+
   if (command === "open-cmdai") {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       chrome.tabs.sendMessage(tabs[0].id, { action: "toggleCmdAI" });
