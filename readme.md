@@ -1,1 +1,0 @@
-A Chrome extension that brings context-aware Gemini AI to any webpage via a keyboard shortcut.
